@@ -10,8 +10,8 @@ sound_synth(bones_down, 1, 0);
 
 
 p_stopaction;
-// strongqueue(tut_finish_bury, 1, $last_item); // added in like 2006?
-p_delay(0);
+//strongqueue(tut_finish_bury, 1, $last_item); // added in like 2006?
+//p_delay(0); //remove delay
 
 def_obj $last_item = inv_getobj(inv, $slot);
 inv_delslot(inv, $slot);
