@@ -154,7 +154,7 @@ p_delay(2); // delays for 3t before doing anything, might be a rework thing
 switch_int(%itgronigen_progress) {
     case ^itgronigen_complete, ^itgronigen_claimed_wine : @observatory_telescope;
     case ^itgronigen_sent_telescope :
-        if (npc_find(coord, observatory_professor_tower, 7, 0) = true) {
+        if (npc_find(coord, observatory_professor2, 7, 0) = true) {
             ~chatnpc("<p,happy>Well done, well done!!|Let's see what the stars have in store for us today.");
             @observatory_telescope;
         }
@@ -203,7 +203,7 @@ if($constellation > 6) { // because model 3056 isn't a constellation for some re
 if_setmodel(telescope:com_92, calc(3049 + $constellation));
 
 [queue,constellation_dialogue](int $constellation_numb)
-if (npc_find(coord, observatory_professor_tower, 7, 0) = false) {
+if (npc_find(coord, observatory_professor2, 7, 0) = false) {
     return;
 }
 switch_int(~p_choice2("I can see a constellation.", 1, "What am I looking at?", 2)) {
@@ -267,19 +267,4 @@ queue(itgronigen_quest_complete, 0);
 
 [queue,itgronigen_quest_complete]
 session_log(^log_adventure, "Quest complete: Observatory");
-// Random quest complete jingle.
-def_int $random = random(128);
-if ($random < 32) {
-    // The least common music that plays when completing a quest.
-    ~midi_jingle(^quest_complete_3_jingle, ^quest_complete_3_millis);
-} else if ($random < 64) {
-    // A less common music that plays when completing a quest.
-    ~midi_jingle(^quest_complete_2_jingle, ^quest_complete_2_millis);
-} else {
-    // The most common music that plays when completing a quest.
-    ~midi_jingle(^quest_complete_1_jingle, ^quest_complete_1_millis);
-}
-if_openmain(questscroll_itgronigen);
-if_setcolour(questlist:itgronigen, ^green_rgb);
-if_settab(questlist, ^tab_quest_journal);
-mes("Congratulations! Quest complete!");
+~send_quest_complete(questlist:itgronigen, null, 0, ^itgronigen_questpoints, null);

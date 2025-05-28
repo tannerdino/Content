@@ -112,7 +112,7 @@ if ($data = null) {
 // roll for gem
 def_int $chance = 256;
 def_obj $neck = inv_getobj(worn, ^wearpos_front);
-if ($neck ! null & oc_category($neck) = category_557) {
+if ($neck ! null & oc_category($neck) = category_557 & map_members = ^true) {
     $chance = 86;
 }
 if (random($chance) = ^true) {
@@ -129,11 +129,12 @@ if (random($chance) = ^true) {
     // deplete
     def_int $mined = 0;
     if ( random(4) = 0) {
-    def_int $respawn = ~scale_by_playercount(db_getfield($data, mining_table:rock_respawnrate, 0));
-    loc_change(loc_param(next_loc_stage_mining), $respawn);
-    sound_synth(sound_230, 0, 0); // Sudden says its sound_230
-    anim(null, 0);
-    $mined = 1;
+        def_int $respawn = ~scale_by_playercount(db_getfield($data, mining_table:rock_respawnrate, 0));
+        // Temp note: dur does not need updated
+        loc_change(loc_param(next_loc_stage_mining), $respawn);
+        sound_synth(sound_230, 0, 0); // Sudden says its sound_230
+        anim(null, 0);
+        $mined = 1;
     }
     // Temp note: dur does not need updated
     // The 'perfect' gold rocks in Family Crest are the same ID as regular gold rocks, so check to 
@@ -164,8 +165,8 @@ if ($data = null) {
 // roll for gem
 def_int $chance = 256;
 def_obj $neck = inv_getobj(worn, ^wearpos_front);
-if ($neck ! null & oc_category($neck) = category_557) {
-    $chance = 64;
+if ($neck ! null & oc_category($neck) = category_557 & map_members = ^true) {
+    $chance = 86;
 }
 if (random($chance) = ^true) {
     def_namedobj $gem = ~mining_gem_table;
@@ -177,12 +178,12 @@ if (random($chance) = ^true) {
     }
 } else if (stat_random(mining, db_getfield($data, mining_table:rock_successchance, 0)) = true) {
     if ( random(4) = 0) {
-    // deplete
-    def_int $respawn = ~scale_by_playercount(db_getfield($data, mining_table:rock_respawnrate, 0));
-    // Temp note: dur does not need updated
-    loc_change(loc_param(next_loc_stage_mining), $respawn);
-    sound_synth(sound_230, 0, 0); // Sudden says its sound_230
-    anim(null, 0);
+        // deplete
+        def_int $respawn = ~scale_by_playercount(db_getfield($data, mining_table:rock_respawnrate, 0));
+        // Temp note: dur does not need updated
+        loc_change(loc_param(next_loc_stage_mining), $respawn);
+        sound_synth(sound_230, 0, 0); // Sudden says its sound_230
+        anim(null, 0);
     }
     inv_add(inv, db_getfield($data, mining_table:rock_output, 0), 1);
     stat_advance(mining, db_getfield($data, mining_table:rock_exp, 0));
@@ -217,7 +218,7 @@ def_int $low;
 def_int $high;
 $low, $high = db_getfield($data, mining_table:rock_successchance, 0);
 def_obj $neck = inv_getobj(worn, ^wearpos_front);
-if ($neck ! null & oc_category($neck) = category_557) {
+if ($neck ! null & oc_category($neck) = category_557 & map_members = ^true) {
     $low = multiply($low, 3);
     $high = multiply($high, 3);
 }

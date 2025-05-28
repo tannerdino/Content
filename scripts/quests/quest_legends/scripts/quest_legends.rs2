@@ -38,28 +38,26 @@
 
 [oploc2,legends_table]
 mes("You start searching the table...");
-if (inv_total(inv, scrawled_note2) < 0) {
+if (inv_total(inv, scrawled_note2) = 0) {
     // no delay
     ~objbox(scrawled_note2, "You find a scrap of paper with what looks like nonsense written on it.", 250, 0, 0);
     inv_add(inv, scrawled_note2, 1);
-}
-else {
-    mes("You cannot find anything else in here.");
-}
+    return;
+} 
+mes("You cannot find anything else in here.");
 
 [oploc1,legends_crate]
 ~mesbox("It looks like a rickety old crate, perhaps placed in this recess to hide it from prying eyes.");
 
 [oploc2,legends_crate]
 mes("You search the crate.");
-if (inv_total(inv, scrawled_note1) < 0) {
+if (inv_total(inv, scrawled_note1) = 0) {
     p_delay(0);
     ~objbox(scrawled_note1, "After some time you find a scrumpled up piece of paper. It looks like rubbish.", 250, 0, 0);
     inv_add(inv, scrawled_note1, 1);
+    return;
 }
-else {
-    mes("You can't find anything else here.");
-}
+mes("You can't find anything else here.");
 
 [oploc2,legends_bed]
 // no delay
@@ -68,10 +66,9 @@ if (inv_total(inv, scrawled_note3) = 0) {
     // mes instead of mesbox here
     mes("You find a scrap of paper with spidery writing on it.");;
     inv_add(inv, scrawled_note3, 1);
+    return;
 }
-else {
-    mes("You cannot find anything else in here.");
-}
+mes("You cannot find anything else in here.");
 
 [oploc1,legends_desk]
 mes("It's a very old rickety desk made of bamboo.");
@@ -287,6 +284,7 @@ if (last_useitem = goldbowlbless_pure) {
     if($bowl_uses >= 9) {
         inv_del(inv, goldbowlbless_pure, 1);
         inv_add(inv, goldbowlbless_empty, 1);
+        %legends_bits = setbit_range_toint(%legends_bits, 0, ^legends_golden_bowl_uses_start, ^legends_golden_bowl_uses_end);
         mes("The pure water in the golden bowl has run out...");
     }
     ~legends_fire_wall_walk;
@@ -1353,6 +1351,7 @@ if (last_useitem = vial_empty) {
     if ($bowl_uses >= 9) {
         inv_del(inv, goldbowlbless_pure, 1);
         inv_add(inv, goldbowlbless_empty, 1);
+        %legends_bits = setbit_range_toint(%legends_bits, 0, ^legends_golden_bowl_uses_start, ^legends_golden_bowl_uses_end);
         // osrs
         //mes("The golden bowl is empty. There's no sacred water left.");
         // rs3
@@ -1369,6 +1368,7 @@ if (last_useitem = vial_empty) {
     if ($bowl_uses >= 9) {
         inv_del(inv, goldbowlbless_pure, 1);
         inv_add(inv, goldbowlbless_empty, 1);
+        %legends_bits = setbit_range_toint(%legends_bits, 0, ^legends_golden_bowl_uses_start, ^legends_golden_bowl_uses_end);
         mes("The pure water in the golden bowl has run out...");
         return;
     }
@@ -1511,13 +1511,7 @@ $final_obj, $anim, $spotanim, $sound = ~magic_spell_search_convertobj($spell_dat
 facesquare(loc_coord);
 p_delay(0);
 inv_del(inv, stafforb, 1);
-if (%chosen_combat_style_buff = 3) {
-    if (random(10) = 0) { // 1 out of 10 chance
-        ~delete_spell_runes($spell_data);
-    }
-} else {
-    ~delete_spell_runes($spell_data);
-}
+~delete_spell_runes($spell_data);
 ~give_spell_xp($spell_data);
 anim($anim, 0);
 spotanim_pl($spotanim, 92, 0);
